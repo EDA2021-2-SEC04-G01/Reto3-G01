@@ -30,9 +30,44 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
+def init():
+    """
+    Llama la funcion de inicializacion  del modelo.
+    """
+    # catalog es utilizado para interactuar con el modelo
+    analyzer = model.newAnalyzer()
+    return analyzer
 
 # Funciones para la carga de datos
+def loadData(analyzer, viewsfile):
+    """
+    Carga los datos de los archivos CSV en el modelo
+    """
+    viewsfile = cf.data_dir + viewsfile
+    input_file = csv.DictReader(open(viewsfile, encoding="utf-8"),
+                                delimiter=",")
+    for view in input_file:
+        model.addToIndex(analyzer, view,'citiesIndex','city')
+        model.addToIndex(analyzer, view,'durationsIndex','duration (seconds)')
+        model.addToIndex(analyzer, view,'datesIndex','datetime')
+        model.addToIndex(analyzer, view,'timeIndex','datetime')
+        model.addToIndex(analyzer, view,'latitudesIndex','latitude')
+        model.addToIndex(analyzer, view,'longitudesIndex','longitude')
+    return analyzer
 
-# Funciones de ordenamiento
+
 
 # Funciones de consulta sobre el catálogo
+
+def requerimiento_1(nombreCiudad,cont):
+    rta=model.viewsPerCity(nombreCiudad,cont)
+    
+    return rta
+
+def requerimiento_2(rangeMin,rangeMax):
+    rta=model.viewsPerDuration(rangeMin,rangeMax)
+    return rta
+
+def requerimiento_3(rangeMin,rangeMax):
+    rta=model.countViewsPerTime(rangeMin,rangeMax) 
+    pass

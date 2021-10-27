@@ -25,7 +25,8 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+import model
+from DISClib.ADT import orderedmap as om
 
 """
 La vista se encarga de la interacción con el usuario
@@ -37,7 +38,9 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Contar los avistamientos en una ciudad")
+    print("3- Contar los avistamientos por duración")
+    print("4- Contar avistamientos por Hora/Minutos del día")
 
 catalog = None
 
@@ -49,10 +52,30 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        cont = controller.init()
+        controller.loadData(cont,'UFOS-utf8-small.csv') 
+        # print(lt.subList(cont['views'],1,5))
+        # print(lt.subList(cont['views'],lt.size(cont['views']-5),lt.size(cont['views'])))
 
     elif int(inputs[0]) == 2:
+        nombre= input("Escriba el nombre de la ciudad: ")
+        print(nombre)
+        rta=controller.requerimiento_1(nombre,cont)
+        print("La cantidad de elementos es: {}".format(rta[0]))
+        print("La altura del arbol es: {}".format(rta[1]))
+
+    elif int(inputs[0]) == 3:
+        rangeMin= int(input("Limite inferior (en segundos): "))
+        rangeMax= int(input("Limite superior (en segundos): "))
+        rta=controller.requerimiento_2(rangeMin,rangeMax)
+
+    elif int(inputs[0]) == 4:
+        rangeMin= int(input("Límite inferior en formato HH: MM. "))
+        rangeMax= int(input("Límite superior en formato HH: MM. "))
+        rta=controller.requerimiento_3(rangeMin,rangeMax)
+
         pass
 
     else:
         sys.exit(0)
-sys.exit(0)
+

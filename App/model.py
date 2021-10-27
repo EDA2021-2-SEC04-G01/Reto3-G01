@@ -1,45 +1,50 @@
-﻿"""
- * Copyright 2020, Departamento de sistemas y Computación,
- * Universidad de Los Andes
- *
- *
- * Desarrolado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
- *
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Contribuciones:
- *
- * Dario Correal - Version inicial
- """
-
-
-import config as cf
+﻿import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from datetime import datetime
+
 assert cf
 
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
+#TODO Meta=183 líneas o menos ##
 
 # Construccion de modelos
+def newAnalyzer():
+    analyzer = {
+        'views':lt.newList('SINGLE_LINKED'),
+        'timeIndex': (om.newMap(omaptype='BST',comparefunction=compareKeys)),
+        'citiesIndex':om.newMap(omaptype='RBT'),
+        'durationsIndex':(om.newMap(omaptype='RBT',comparefunction=compareKeys)),
+        'datesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys),
+        'latitudesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys),
+        'longitudesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys)
+    }
+    return analyzer
+
+def compareKeys(key1,key2):
+    if key1==key2 :   return  0
+    elif key1>key2:   return  1
+    elif key1<key2:   return -1
 
 # Funciones para agregar informacion al catalogo
+
+def addToIndex(analyzer,view,nameIndex:str,variable:str):
+
+    index = analyzer[nameIndex]
+    var = view[variable]
+    if nameIndex =='datesIndex' or nameIndex=='timeIndex':
+
+        var = datetime.strptime(var,'%Y-%m-%d %H:%M:%S')
+        if nameIndex =='datesIndex': var = var.date()
+        else:                        var = var.time()
+    
+    if om.contains(index,var):  lista = om.get(index,var)['value']
+    else:                       lista = lt.newList()
+
+    lt.addLast(lista,view)
+    om.put(index,var,lista)
 
 # Funciones para creacion de datos
 
@@ -48,3 +53,19 @@ los mismos.
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
+
+#REQ 1
+
+def viewsPerCity(nombreCiudad,cont):
+    index = cont['citiesIndex']
+    size = om.size(index)
+    height = om.height(index)
+    return (size,height)
+#REQ 2
+
+def viewsPerDuration(rangeMin,rangeMax):
+    pass
+
+#REQ 3
+def countViewsPerTime(rangeMin,rangeMax):
+    pass
