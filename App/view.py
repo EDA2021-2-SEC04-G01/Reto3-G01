@@ -74,7 +74,7 @@ while True:
         rangeMax= int(input("Límite superior en formato HH: MM. "))
         rta=controller.requerimiento_3(rangeMin,rangeMax)
 
-        pass
+        
 
     else:
         sys.exit(0)
