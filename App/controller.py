@@ -50,7 +50,7 @@ def loadData(analyzer, viewsfile):
         model.addToIndex(analyzer, view,'citiesIndex','city')
         model.addToIndex(analyzer, view,'durationsIndex','duration (seconds)')
         model.addToIndex(analyzer, view,'datesIndex','datetime')
-        model.addToIndex(analyzer, view,'timeIndex','datetime')
+        model.addToIndex(analyzer, view,'timesIndex','datetime')
         model.addToIndex(analyzer, view,'latitudesIndex','latitude')
         model.addToIndex(analyzer, view,'longitudesIndex','longitude')
     return analyzer
@@ -64,10 +64,15 @@ def requerimiento_1(nombreCiudad,cont):
     
     return rta
 
-def requerimiento_2(rangeMin,rangeMax):
-    rta=model.viewsPerDuration(rangeMin,rangeMax)
+def requerimiento_2(cont,rangeMin,rangeMax):
+    rta=model.almostEveryThing(cont,rangeMin,rangeMax,'durationsIndex',False,False)
     return rta
 
-def requerimiento_3(rangeMin,rangeMax):
-    rta=model.countViewsPerTime(rangeMin,rangeMax) 
-    pass
+def requerimiento_3(cont,rangeMin,rangeMax):
+    return model.almostEveryThing(cont,rangeMin,rangeMax,'datesIndex',False,True)
+
+def requerimiento_4(cont,rangeMin,rangeMax):
+    return model.almostEveryThing(cont,rangeMin,rangeMax,'timesIndex',True,False)
+
+
+
