@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-
+import model
 import config as cf
 import sys
 import controller
@@ -49,15 +49,14 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         cont = controller.init()
-        controller.loadData(cont,'UFOS-utf8-small.csv') 
+        controller.loadData(cont,'UFOS-utf8-large.csv') 
 
     elif int(inputs[0]) == 2:
         nombre= input("Escriba el nombre de la ciudad: ")
         print(nombre)
         rta=controller.requerimiento_1(nombre,cont)
         listToTable = rta[0]
-        listTable = rta[1]
-        table = t.createTable(listToTable,listTable)
+        table = t.createTable(listToTable,False)
         print(table)
 
     elif int(inputs[0]) == 3:
@@ -65,8 +64,7 @@ while True:
         rangeMax= float(input("Limite superior (en segundos): "))
         rta = controller.requerimiento_2(cont,rangeMin,rangeMax)
         listToTable = rta[0]
-        listTable = rta[1]
-        table = t.createTable(listToTable,listTable)
+        table = t.createTable(listToTable)
         print(table)
 
     elif int(inputs[0]) == 4:
@@ -74,8 +72,7 @@ while True:
         rangeMax= input("Límite superior en formato HH: MM. ")
         rta=controller.requerimiento_3(cont,rangeMin,rangeMax)
         listToTable = rta[0]
-        listTable = rta[1]
-        table = t.createTable(listToTable,listTable)
+        table = t.createTable(listToTable,False)
         print(table)
 
     elif int(inputs[0]) == 5:
@@ -83,9 +80,19 @@ while True:
         rangeMax = input("Límite inferior en formato AAAA-MM-DD: ") 
         rta = controller.requerimiento_4(cont,rangeMin,rangeMax)
         listToTable = rta[0]
-        listTable = rta[1]
-        table = t.createTable(listToTable,listTable)
+        table = t.createTable(listToTable,False)
         print(table)
+
+    elif int(inputs[0]) == 6:
+        latMin = float(input("Latitud mínima: ") )
+        latMax = float(input("Latitud máxima: ") )
+        longMin = float(input("Longitud mínima: ") )
+        longMax = float(input("Longitud máxima: ") )
+        rta = model.searchLocation(cont,latMin,latMax,longMin,longMax)
+        listToTable = rta[0]
+        table = t.createTable(listToTable,True)
+        print(table)
+        print(rta[1])
     else:
         sys.exit(0)
 

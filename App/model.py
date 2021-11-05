@@ -35,7 +35,7 @@ def addToIndex(analyzer,view,nameIndex:str,variable:str):
     index = analyzer[nameIndex]
     var = view[variable]
 
-    if nameIndex=='durationsIndex': var = float(var)
+    if nameIndex=='durationsIndex' or nameIndex=='latitudesIndex' or nameIndex=='longitudesIndex': var = float(var)
 
     if nameIndex =='datesIndex' or nameIndex=='timesIndex':
         var = var[:-3]
@@ -67,6 +67,15 @@ def compareTimes(view1,view2):
     time2= datetime.strptime(view2['datetime'],'%Y-%m-%d %H:%M:%S').time()
     return time1<time2
 
+def compareLocations(view1,view2):
+    latitude1 = view1['latitude']
+    longitude1 = view1['longitude']
+    latitude2 = view2['latitude']
+    longitude2 = view2['longitude']
+
+    return longitude1+latitude1>latitude2+longitude2
+
+
 # Funciones de ordenamiento
 
 def sortbyDates(list):
@@ -77,6 +86,9 @@ def sortbyTime(list):
 
 def sortbyDurations(list):
     sa.sort(list,compareDurations)
+
+def sortLocations(list):
+    sa.sort(list,compareLocations)
 #+++====================================================================================================================+++
 #REQ 1
 def viewsPerCity(nombreCiudad,cont):
@@ -105,7 +117,6 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
     
     index = cont[nameIndex]
     lista = om.values(index,rangeMin,rangeMax)
-    listTable =[]
     filteredList=lt.newList('ARRAY_LIST')
     if isDate:    
             rangeMin = datetime.strptime(rangeMin,'%Y-%m-%d').date()
@@ -116,15 +127,26 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
             rangeMax = datetime.strptime(rangeMax,'%H:%M').time()
 
     for list in lt.iterator(lista):
-        for value in lt.iterator(list):
-            lt.addLast(filteredList,value)
+        for value in lt.iterator(list): lt.addLast(filteredList,value)
 
     if isDate:      sortbyDates(filteredList)
     elif isTime:    sortbyTime(filteredList)
     else:           sortbyDurations(filteredList)
-    return (filteredList,listTable)
+    return (filteredList)
 
 #+++====================================================================================================================+++
 #REQ 5
+def searchLocation(cont,latitudeMin,latitudeMax,longMin,longMax):
+
+    filteredList = lt.newList('ARRAY_LIST')
+    indexLatitude = cont['latitudesIndex']
+    lista1 = om.values(indexLatitude,latitudeMin,latitudeMax)
+    
+    for list in lt.iterator(lista1):
+        for value in lt.iterator(list):
+            if float(value['longitude']) >=longMin and float(value['longitude'])<=longMax: lt.addLast(filteredList,value) #Toca así porque range() solo admite int
+    sortbyDates(filteredList)
+    numElem = lt.size(filteredList)
+    return (filteredList,numElem)
 
 #REQ 6
