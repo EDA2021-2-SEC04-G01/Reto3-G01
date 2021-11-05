@@ -5,7 +5,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from datetime import datetime
-
+import folium as f
 assert cf
 
 #TODO Meta=183 líneas o menos ##
@@ -150,3 +150,16 @@ def searchLocation(cont,latitudeMin,latitudeMax,longMin,longMax):
     return (filteredList,numElem)
 
 #REQ 6
+def bono(locations):
+    latMin = float(lt.firstElement(locations)['latitude'])
+    longMin = float(lt.firstElement(locations)['longitude'])
+    latMax = float(lt.lastElement(locations)['latitude'])
+    longMax = float(lt.firstElement(locations)['longitude'])
+    promLat = (latMin+latMax)/2
+    promLong = (longMin+longMax)/2
+    
+    mapa = f.Map(location=[promLat,promLong],zoom_start=6)
+    for view in lt.iterator(locations):
+        f.Marker(location=[float(view['latitude']), float(view['longitude'])],popup=view['datetime'],icon=f.Icon(color='red',icon='info-sign')).add_to(mapa)
+    mapa.save("Docs\\Mapas\\mapa.html")
+

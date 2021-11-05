@@ -25,6 +25,7 @@ import sys
 import controller
 assert cf
 import tabless as t
+import webbrowser
 """
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
@@ -43,13 +44,14 @@ def printMenu():
 """
 Menu principal
 """
+listLocations=None
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         cont = controller.init()
-        controller.loadData(cont,'UFOS-utf8-large.csv') 
+        controller.loadData(cont,'UFOS-utf8-small.csv') 
 
     elif int(inputs[0]) == 2:
         nombre= input("Escriba el nombre de la ciudad: ")
@@ -89,10 +91,18 @@ while True:
         longMin = float(input("Longitud mínima: ") )
         longMax = float(input("Longitud máxima: ") )
         rta = model.searchLocation(cont,latMin,latMax,longMin,longMax)
-        listToTable = rta[0]
-        table = t.createTable(listToTable,True)
+        listLocations = rta[0]
+        table = t.createTable(listLocations,True)
         print(table)
         print(rta[1])
+    
+    elif int(inputs[0]) == 7:
+        if listLocations==None:
+            print("Ejecute primero la opción 6")
+        else:
+            model.bono(listLocations)
+            webbrowser.open("Docs\\Mapas\\mapa.html")
+
     else:
         sys.exit(0)
 
