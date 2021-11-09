@@ -45,3 +45,9 @@ def createTable(filteredList,isLocation:bool):
     table = tabulate(listTable,headers=headers,numalign='right',tablefmt='grid') 
     return table
 #↑↑↑ Termina el formatting de las tablas ↑↑↑
+
+def simpleTable(variable,count,headerName):
+    headers = [headerName,'count']
+    info = [[variable,count]]
+    table = tabulate(info,headers=headers,numalign='right',tablefmt='grid')
+    return table

@@ -114,10 +114,12 @@ def viewsPerCity(nombreCiudad,cont):
 #+++====================================================================================================================+++
 #REQ 2,3 y 4
 def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
-    
+    cantidades = om.newMap('RBT',comparefunction=compareKeys)
     index = cont[nameIndex]
     lista = om.values(index,rangeMin,rangeMax)
     filteredList=lt.newList('ARRAY_LIST')
+    variable = 'datetime'
+
     if isDate:    
             rangeMin = datetime.strptime(rangeMin,'%Y-%m-%d').date()
             rangeMax = datetime.strptime(rangeMax,'%Y-%m-%d').date()
@@ -125,14 +127,29 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
     elif isTime:
             rangeMin = datetime.strptime(rangeMin,'%H:%M').time()
             rangeMax = datetime.strptime(rangeMax,'%H:%M').time()
+    
+    else: variable = 'duration'
 
     for list in lt.iterator(lista):
-        for value in lt.iterator(list): lt.addLast(filteredList,value)
+        for value in lt.iterator(list): 
+            addToIndex(cantidades,value,nameIndex,variable)
+            lt.addLast(filteredList,value)
 
-    if isDate:      sortbyDates(filteredList)
+    
+    # Key = om.maxKey(cantidades)
+    # returnValue = lt.size(Key)
+    Key = None
+    returnValue=None
+    if isDate:      
+                    sortbyDates(filteredList)
+                    # Key = om.minKey(cantidades)
+                    # returnValue = lt.size(Key)
     elif isTime:    sortbyTime(filteredList)
     else:           sortbyDurations(filteredList)
-    return (filteredList)
+
+    total = lt.size(filteredList)
+
+    return (filteredList,Key,returnValue,total)
 
 #+++====================================================================================================================+++
 #REQ 5
@@ -162,4 +179,3 @@ def bono(locations):
     for view in lt.iterator(locations):
         f.Marker(location=[float(view['latitude']), float(view['longitude'])],popup=view['datetime'],icon=f.Icon(color='red',icon='info-sign')).add_to(mapa)
     mapa.save("Docs\\Mapas\\mapa.html")
-

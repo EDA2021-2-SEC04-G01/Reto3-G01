@@ -55,8 +55,12 @@ while True:
 
     elif int(inputs[0]) == 2:
         nombre= input("Escriba el nombre de la ciudad: ")
-        print(nombre)
+        print("========== Req No. 1 Inputs ==========\n" + "UFO Sighting in the city of: " + str(nombre))
+        print("\n")
+        
         rta=controller.requerimiento_1(nombre,cont)
+        print("========== Req No. 1 Answer ==========\n" + "There are "+str(rta[3])+" different cities with UFO sightings...\n")
+        print("The city with most UFO sightings is: ")
         listToTable = rta[0]
         table = t.createTable(listToTable,False)
         print(table)
@@ -64,7 +68,13 @@ while True:
     elif int(inputs[0]) == 3:
         rangeMin= float(input("Limite inferior (en segundos): "))
         rangeMax= float(input("Limite superior (en segundos): "))
+        print("========== Req No. 2 Imputs ==========\n")
+        print('UFO sightings between '+str(rangeMin)+ ' and '+str(rangeMax)+'\n')
+        print("\n")
+        
         rta = controller.requerimiento_2(cont,rangeMin,rangeMax)
+        print('========== Req No. 2 Answer ==========\n')
+        print('There are '+str(rta[3])+' different durations of UFO sightings...\n')
         listToTable = rta[0]
         table = t.createTable(listToTable)
         print(table)
@@ -80,7 +90,14 @@ while True:
     elif int(inputs[0]) == 5:
         rangeMin = input("Límite inferior en formato AAAA-MM-DD: ") 
         rangeMax = input("Límite inferior en formato AAAA-MM-DD: ") 
+        print("======================================Req. No 4 Inputs======================================")
+        print("UFO sightings between {} and {}".format(rangeMin,rangeMax))
         rta = controller.requerimiento_4(cont,rangeMin,rangeMax)
+        total = rta[3]
+        variableName = 'date'
+        print("======================================Req. No 4 Answers======================================")
+        print("There are {} different UFO sightings dates [YYYY-M-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
+        print(t.simpleTable(rta[1],rta[2],variableName))
         listToTable = rta[0]
         table = t.createTable(listToTable,False)
         print(table)
