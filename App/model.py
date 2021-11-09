@@ -5,7 +5,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from datetime import datetime
-import folium as f
+#import folium as f
 assert cf
 
 #TODO Meta=183 líneas o menos ##

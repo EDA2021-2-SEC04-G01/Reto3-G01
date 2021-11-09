@@ -26,6 +26,7 @@ import controller
 assert cf
 import tabless as t
 import webbrowser
+from DISClib.ADT import list as lt
 """
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
@@ -64,10 +65,15 @@ while True:
     elif int(inputs[0]) == 3:
         rangeMin= float(input("Limite inferior (en segundos): "))
         rangeMax= float(input("Limite superior (en segundos): "))
+        print('========== Req No. 2 Inputs ==========\n')
+        print('UFO sightings between '+str(rangeMin)+' and '+str(rangeMax)+'\n')
         rta = controller.requerimiento_2(cont,rangeMin,rangeMax)
-        listToTable = rta[0]
+        print('========== Req No. 2 Answer ==========\n')
+        print('There are '+str(lt.size(rta))+ ' different UFO sightings durations... \n')
+        listToTable = rta
         table = t.createTable(listToTable)
-        print(table)
+        print('The TOP 5 durations with longest UFO sightings are: \n'+str(table))
+        pass
 
     elif int(inputs[0]) == 4:
         rangeMin= input("Límite inferior en formato HH: MM. ")
