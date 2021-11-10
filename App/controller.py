@@ -69,10 +69,10 @@ def requerimiento_2(cont,rangeMin,rangeMax):
     return rta
 
 def requerimiento_3(cont,rangeMin,rangeMax):
-    return model.almostEveryThing(cont,rangeMin,rangeMax,'datesIndex',False,True)
+    return model.almostEveryThing(cont,rangeMin,rangeMax,'timesIndex',False,True)
 
 def requerimiento_4(cont,rangeMin,rangeMax):
-    return model.almostEveryThing(cont,rangeMin,rangeMax,'timesIndex',True,False)
+    return model.almostEveryThing(cont,rangeMin,rangeMax,'datesIndex',True,False)
 
 
 

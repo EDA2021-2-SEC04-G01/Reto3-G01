@@ -87,6 +87,9 @@ while True:
         rta=controller.requerimiento_3(cont,rangeMin,rangeMax)
         listToTable = rta[0]
         table = t.createTable(listToTable,False)
+        variableName = 'time'
+        print(t.simpleTable(rta[1],rta[2],variableName))
+        listToTable = rta[0]
         print(table)
 
     elif int(inputs[0]) == 5:
