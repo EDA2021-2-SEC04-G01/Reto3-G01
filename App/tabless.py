@@ -8,7 +8,7 @@ def distribuir(elemento,cantidad):
     return str_distribuido
 
 def chkUnknown(origen,clave):
-    if origen[clave]==None or origen[clave]=='' or origen[clave]==5000 or origen[clave]=='2100-12-24': return 'Unknown' #El 5000 se pone para compensar una de las funciones de comparación de años.
+    if origen[clave]==None or origen[clave]=='' or origen[clave]==5000 or origen[clave]=='2100-12-24': return 'Not available' #El 5000 se pone para compensar una de las funciones de comparación de años.
     else: return origen[clave]
 def selectInfo(position,listViews,FilteredList,style):
 #       ↓↓↓ Todo este montón de líneas se encargan de sacar la info. necesaria del diccionario grande y con textwrap lo separa en líneas de un igual tamaño.

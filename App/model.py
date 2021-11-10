@@ -119,7 +119,6 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
     
     filteredList=lt.newList('ARRAY_LIST')
 
-
     if isDate:    
             rangeMin = datetime.strptime(rangeMin,'%Y-%m-%d').date()
             rangeMax = datetime.strptime(rangeMax,'%Y-%m-%d').date()
@@ -135,7 +134,6 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
         for value in lt.iterator(list): 
 
             lt.addLast(filteredList,value)
-
 
     Key = om.maxKey(index)
     returnValue = lt.size(om.get(index,Key))

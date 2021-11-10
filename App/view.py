@@ -99,11 +99,14 @@ while True:
         print("UFO sightings between {} and {}".format(rangeMin,rangeMax))
         rta = controller.requerimiento_4(cont,rangeMin,rangeMax)
         total = rta[3]
+        total_range = rta[4]
+        listToTable = rta[0]
         variableName = 'date'
         print("\n+======================================Req. No 4 Answers======================================+\n")
         print("There are {} different UFO sightings dates [YYYY-M-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
         print(t.simpleTable(rta[1],rta[2],variableName))
-        listToTable = rta[0]
+        print("\nThere are {} sightings between: {} and {}".format(total_range,rangeMin,rangeMax))
+        print("The first 3 and last 3 UFO sightings in this time are:\n")
         table = t.createTable(listToTable,'date')
         print(table)
 
