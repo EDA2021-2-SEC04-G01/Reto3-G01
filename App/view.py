@@ -95,12 +95,12 @@ while True:
     elif int(inputs[0]) == 5:
         rangeMin = input("Límite inferior en formato AAAA-MM-DD: ") 
         rangeMax = input("Límite inferior en formato AAAA-MM-DD: ") 
-        print("======================================Req. No 4 Inputs======================================")
+        print("+======================================Req. No 4 Inputs======================================+\n")
         print("UFO sightings between {} and {}".format(rangeMin,rangeMax))
         rta = controller.requerimiento_4(cont,rangeMin,rangeMax)
         total = rta[3]
         variableName = 'date'
-        print("======================================Req. No 4 Answers======================================")
+        print("\n+======================================Req. No 4 Answers======================================+\n")
         print("There are {} different UFO sightings dates [YYYY-M-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
         print(t.simpleTable(rta[1],rta[2],variableName))
         listToTable = rta[0]

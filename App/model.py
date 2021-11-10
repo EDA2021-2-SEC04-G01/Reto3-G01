@@ -20,7 +20,8 @@ def newAnalyzer():
         'durationsIndex':(om.newMap(omaptype='RBT',comparefunction=compareKeys)),
         'datesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys),
         'latitudesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys),
-        'longitudesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys)
+        'longitudesIndex':om.newMap(omaptype='RBT',comparefunction=compareKeys),
+        'cantidades':mp.newMap(maptype='CHAINING')
     }
     return analyzer
 
@@ -34,8 +35,9 @@ def compareKeys(key1,key2):
 def addToIndex(analyzer,view,nameIndex:str,variable:str):
 
     index = analyzer[nameIndex]
+    cantidades = analyzer['cantidades']
     var = view[variable]
-
+    
     if nameIndex=='durationsIndex' or nameIndex=='latitudesIndex' or nameIndex=='longitudesIndex': var = float(var)
 
     if nameIndex =='datesIndex' or nameIndex=='timesIndex':
@@ -46,13 +48,11 @@ def addToIndex(analyzer,view,nameIndex:str,variable:str):
     
     if om.contains(index,var):  lista = om.get(index,var)['value']
     else:                       lista = lt.newList()
-
+    if mp.contains(cantidades,nameIndex): cant=mp.get(cantidades,nameIndex)['value'] +1
+    else:                                 cant = 1
+    mp.put(cantidades,nameIndex,cant)
     lt.addLast(lista,view)
     om.put(index,var,lista)
-
-# Funciones para creacion de datos
-
-# Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareDurations(view1,view2):
@@ -75,7 +75,6 @@ def compareLocations(view1,view2):
     longitude2 = view2['longitude']
 
     return longitude1+latitude1>latitude2+longitude2
-
 
 # Funciones de ordenamiento
 
@@ -115,11 +114,11 @@ def viewsPerCity(nombreCiudad,cont):
 #+++====================================================================================================================+++
 #REQ 2,3 y 4
 def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
-    cantidades = {nameIndex:om.newMap('RBT',comparefunction=compareKeys)}
+    cantidades = cont['cantidades']
     index = cont[nameIndex]
     
     filteredList=lt.newList('ARRAY_LIST')
-    variable = 'datetime'
+
 
     if isDate:    
             rangeMin = datetime.strptime(rangeMin,'%Y-%m-%d').date()
@@ -129,17 +128,15 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
             rangeMin = datetime.strptime(rangeMin,'%H:%M').time()
             rangeMax = datetime.strptime(rangeMax,'%H:%M').time()
 
-    else: variable = 'duration (seconds)'
 
     lista = om.values(index,rangeMin,rangeMax)
 
     for list in lt.iterator(lista):
         for value in lt.iterator(list): 
 
-            addToIndex(cantidades,value,nameIndex,variable)
             lt.addLast(filteredList,value)
 
-    cantidades = cantidades[nameIndex]
+
     Key = om.maxKey(index)
     returnValue = lt.size(om.get(index,Key))
 
@@ -151,9 +148,9 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
     elif isTime:    sortbyTime(filteredList)
     else:           sortbyDurations(filteredList)
 
-    total = lt.size(filteredList)
-
-    return (filteredList,Key,returnValue,total)
+    total_range = lt.size(filteredList)
+    total = mp.get(cantidades,nameIndex)['value']
+    return (filteredList,Key,returnValue,total,total_range)
 #+++====================================================================================================================+++
 #REQ 5
 def searchLocation(cont,latitudeMin,latitudeMax,longMin,longMax):
