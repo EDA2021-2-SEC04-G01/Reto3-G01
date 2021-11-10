@@ -86,7 +86,7 @@ while True:
         rangeMax= input("Límite superior en formato HH: MM. ")
         rta=controller.requerimiento_3(cont,rangeMin,rangeMax)
         listToTable = rta[0]
-        table = t.createTable(listToTable,False)
+        table = t.createTable(listToTable,'time')
         variableName = 'time'
         print(t.simpleTable(rta[1],rta[2],variableName))
         listToTable = rta[0]
@@ -104,7 +104,7 @@ while True:
         print("There are {} different UFO sightings dates [YYYY-M-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
         print(t.simpleTable(rta[1],rta[2],variableName))
         listToTable = rta[0]
-        table = t.createTable(listToTable,False)
+        table = t.createTable(listToTable,'date')
         print(table)
 
     elif int(inputs[0]) == 6:
@@ -114,7 +114,7 @@ while True:
         longMax = float(input("Longitud máxima: ") )
         rta = model.searchLocation(cont,latMin,latMax,longMin,longMax)
         listLocations = rta[0]
-        table = t.createTable(listLocations,True)
+        table = t.createTable(listLocations,'Location')
         print(table)
         print(rta[1])
     
