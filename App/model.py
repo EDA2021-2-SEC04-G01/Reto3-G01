@@ -70,11 +70,8 @@ def compareTimes(view1,view2):
 
 def compareLocations(view1,view2):
     latitude1 = view1['latitude']
-    longitude1 = view1['longitude']
     latitude2 = view2['latitude']
-    longitude2 = view2['longitude']
-
-    return longitude1+latitude1>latitude2+longitude2
+    return latitude1>latitude2
 
 # Funciones de ordenamiento
 
@@ -94,22 +91,21 @@ def sortLocations(list):
 def viewsPerCity(nombreCiudad,cont):
     index = cont['citiesIndex']
     size = om.size(index)
-    height = om.height(index)
+    tamanio = om.size(index)
     keys = om.keySet(index)
     listTable=[]
 
     greatnum = 0
-    great = None
-
     for key in lt.iterator(keys):
         size = lt.size(om.get(index,key)['value'])
         if size>greatnum:
             greatnum = size
             great = om.get(index,key)['key']
-    
+
     cityInfo = om.get(index,nombreCiudad)['value']
+    size_city = lt.size(cityInfo)
     sortbyDates(cityInfo)
-    return (cityInfo,listTable)
+    return (cityInfo,listTable,size_city,tamanio,great)
 
 #+++====================================================================================================================+++
 #REQ 2,3 y 4
@@ -129,12 +125,15 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
 
 
     lista = om.values(index,rangeMin,rangeMax)
-
+    
     for list in lt.iterator(lista):
         for value in lt.iterator(list): 
 
             lt.addLast(filteredList,value)
 
+    total = om.size(index)
+    total_range = lt.size(filteredList)
+    
     Key = om.maxKey(index)
     returnValue = lt.size(om.get(index,Key))
 
@@ -144,10 +143,10 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
                     returnValue = lt.size(om.get(index,Key))
 
     elif isTime:    sortbyTime(filteredList)
-    else:           sortbyDurations(filteredList)
 
-    total_range = lt.size(filteredList)
-    total = mp.get(cantidades,nameIndex)['value']
+    else:           sortbyDurations(filteredList)
+    
+
     return (filteredList,Key,returnValue,total,total_range)
 #+++====================================================================================================================+++
 #REQ 5
@@ -160,7 +159,7 @@ def searchLocation(cont,latitudeMin,latitudeMax,longMin,longMax):
     for list in lt.iterator(lista1):
         for value in lt.iterator(list):
             if float(value['longitude']) >=longMin and float(value['longitude'])<=longMax: lt.addLast(filteredList,value) #Toca así porque range() solo admite int
-    sortbyDates(filteredList)
+        sortLocations(filteredList)
     numElem = lt.size(filteredList)
     return (filteredList,numElem)
 

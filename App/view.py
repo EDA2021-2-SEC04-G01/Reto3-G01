@@ -35,12 +35,14 @@ operación solicitada
 """
 
 def printMenu():
-    print("Bienvenido")
+    print("\nBienvenido! ")
     print("1- Cargar información en el catálogo")
     print("2- Contar los avistamientos en una ciudad")
     print("3- Contar los avistamientos por duración")
     print("4- Contar avistamientos por Hora/Minutos del día")
     print("5- Contar avistamientos en un rango de fechas")
+    print("6- Contar avistamientos en una zona geográfica")
+    print("7- Visualizar avistamientos en una zona geográfica")
 
 """
 Menu principal
@@ -58,10 +60,12 @@ while True:
         nombre= input("Escriba el nombre de la ciudad: ")
         print("========== Req No. 1 Inputs ==========\n" + "UFO Sighting in the city of: " + str(nombre))
         print("\n")
-        
         rta=controller.requerimiento_1(nombre,cont)
+
         print("========== Req No. 1 Answer ==========\n" + "There are "+str(rta[3])+" different cities with UFO sightings...\n")
-        print("The city with most UFO sightings is: ")
+        print("The city with most UFO sightings is: {}".format(rta[4]))
+
+        print("There are {} sightings at the: {} city".format(rta[2],nombre))
         listToTable = rta[0]
         table = t.createTable(listToTable,False)
         print(table)
@@ -69,28 +73,40 @@ while True:
     elif int(inputs[0]) == 3:
         rangeMin= float(input("Limite inferior (en segundos): "))
         rangeMax= float(input("Limite superior (en segundos): "))
-        print("========== Req No. 2 Imputs ==========\n")
+        print("========== Req No. 2 Inputs ==========\n")
         print('UFO sightings between '+str(rangeMin)+ ' and '+str(rangeMax)+'\n')
         print("\n")
         
         rta = controller.requerimiento_2(cont,rangeMin,rangeMax)
+
         print('========== Req No. 2 Answer ==========\n')
         print('There are '+str(rta[3])+' different durations of UFO sightings...\n')
         listToTable = rta[0]
-        table = t.createTable(listToTable)
-        print('The TOP 5 durations with longest UFO sightings are: \n'+str(table))
+        variableName = 'time'
+        print('The longest UFO sightings are: \n')
+        print(t.simpleTable(rta[1],rta[2],variableName))
+        table = t.createTable(listToTable,None  )
+        print('There are '+str(rta[4])+' sightings between: '+str(rangeMin)+ ' and '+str(rangeMax)+'\n')
+        print('The first 3 and last 3 UFO sightings in the duration time are: \n'+str(table))
         pass
 
     elif int(inputs[0]) == 4:
         rangeMin= input("Límite inferior en formato HH: MM. ")
         rangeMax= input("Límite superior en formato HH: MM. ")
+        print('========== Req No. 3 Inputs ==========\n')
+        print('UFO sightings between '+str(rangeMin)+' and '+ str(rangeMax)+'\n')
         rta=controller.requerimiento_3(cont,rangeMin,rangeMax)
+        variableName = 'time'
         listToTable = rta[0]
         table = t.createTable(listToTable,'time')
-        variableName = 'time'
+        print('========== Req No. 3 Answer ==========\n')
+        print('There are '+str(rta[3])+' UFO sightings with different time [hh:mm:ss]...\n')
+        print('The latest UFO sightings time is: \n')
         print(t.simpleTable(rta[1],rta[2],variableName))
-        listToTable = rta[0]
-        print(table)
+        print('There are '+str(rta[4])+' sightings between: '+str(rangeMin)+ ' and '+str(rangeMax)+'\n')
+        print('The first 3 and last 3 UFO sightings in this time are: \n'+table)
+        
+
 
     elif int(inputs[0]) == 5:
         rangeMin = input("Límite inferior en formato AAAA-MM-DD: ") 
@@ -103,7 +119,7 @@ while True:
         listToTable = rta[0]
         variableName = 'date'
         print("\n+======================================Req. No 4 Answers======================================+\n")
-        print("There are {} different UFO sightings dates [YYYY-M-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
+        print("There are {} UFO sightings with different dates [YYYY-MM-DD]…. \nThe oldest UFO sightings date is: ".format(total))        
         print(t.simpleTable(rta[1],rta[2],variableName))
         print("\nThere are {} sightings between: {} and {}".format(total_range,rangeMin,rangeMax))
         print("The first 3 and last 3 UFO sightings in this time are:\n")
@@ -115,11 +131,18 @@ while True:
         latMax = float(input("Latitud máxima: ") )
         longMin = float(input("Longitud mínima: ") )
         longMax = float(input("Longitud máxima: ") )
+        print("+======================================Req. No 5 Inputs======================================+\n")
+        print("UFO sightings between latitude {} and {}".format(latMin,latMax))
+        print("plus longitude range of {} and {}".format(longMin,longMax))
         rta = model.searchLocation(cont,latMin,latMax,longMin,longMax)
         listLocations = rta[0]
+        numElem =rta[1]
+        print("\n+======================================Req. No 5 Answers======================================+\n")
+        print("There are {} different UFO sightings in the current area".format(numElem))
         table = t.createTable(listLocations,'Location')
+        print("The first 3 and last 3 UFO sightings in this area are: \n")
         print(table)
-        print(rta[1])
+        
     
     elif int(inputs[0]) == 7:
         if listLocations==None:
