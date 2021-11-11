@@ -1,5 +1,11 @@
 #ISIS1225 - Librerias de soporte
 
+#INTEGRANTES:
+
+Req. 2 -> DANIEL FELIPE MOLANO RODRIGUEZ - 202012695
+
+Req. 3 -> GERMÁN LEONARDO MORENO CAINABA - 202116701
+
 Este proyecto contiene los Tipos abstractos de datos, estructuras de datos y algoritmos requeridos por el curso ISIS1225-Estructuras de Datos y Algoritmos
 
 -Lib
