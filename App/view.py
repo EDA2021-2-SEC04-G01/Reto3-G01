@@ -43,6 +43,7 @@ def printMenu():
     print("5- Contar avistamientos en un rango de fechas")
     print("6- Contar avistamientos en una zona geográfica")
     print("7- Visualizar avistamientos en una zona geográfica")
+    print("0- Salir")
 
 """
 Menu principal
@@ -54,7 +55,7 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         cont = controller.init()
-        controller.loadData(cont,'UFOS-utf8-small.csv') 
+        controller.loadData(cont,'UFOS-utf8-large.csv') 
 
     elif int(inputs[0]) == 2:
         nombre= input("Escriba el nombre de la ciudad: ")

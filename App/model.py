@@ -33,7 +33,6 @@ def compareKeys(key1,key2):
 # Funciones para agregar informacion al catalogo
 
 def addToIndex(analyzer,view,nameIndex:str,variable:str):
-
     index = analyzer[nameIndex]
     cantidades = analyzer['cantidades']
     var = view[variable]
@@ -74,7 +73,6 @@ def compareLocations(view1,view2):
     return latitude1>latitude2
 
 # Funciones de ordenamiento
-
 def sortbyDates(list):
     sa.sort(list,compareDates)
 
@@ -110,9 +108,7 @@ def viewsPerCity(nombreCiudad,cont):
 #+++====================================================================================================================+++
 #REQ 2,3 y 4
 def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
-    cantidades = cont['cantidades']
     index = cont[nameIndex]
-    
     filteredList=lt.newList('ARRAY_LIST')
 
     if isDate:    
@@ -122,7 +118,6 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
     elif isTime:
             rangeMin = datetime.strptime(rangeMin,'%H:%M').time()
             rangeMax = datetime.strptime(rangeMax,'%H:%M').time()
-
 
     lista = om.values(index,rangeMin,rangeMax)
     
@@ -146,7 +141,6 @@ def almostEveryThing(cont,rangeMin,rangeMax,nameIndex, isDate:bool,isTime:bool):
 
     else:           sortbyDurations(filteredList)
     
-
     return (filteredList,Key,returnValue,total,total_range)
 #+++====================================================================================================================+++
 #REQ 5
@@ -159,7 +153,7 @@ def searchLocation(cont,latitudeMin,latitudeMax,longMin,longMax):
     for list in lt.iterator(lista1):
         for value in lt.iterator(list):
             if float(value['longitude']) >=longMin and float(value['longitude'])<=longMax: lt.addLast(filteredList,value) #Toca así porque range() solo admite int
-        sortLocations(filteredList)
+    sortLocations(filteredList)
     numElem = lt.size(filteredList)
     return (filteredList,numElem)
 
